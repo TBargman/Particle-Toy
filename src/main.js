@@ -111,7 +111,7 @@ class Particle {
     }
     draw() {
         const lifetime = (this.lifespan - this.elapsed) / this.lifespan;
-        const alpha = decToHex(Math.floor(lifetime * 255));
+        const alpha = decToHex255(Math.floor(lifetime * 255));
         ctx.fillStyle = this.color + alpha;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, tau);
@@ -190,7 +190,7 @@ function clampPointerSpeed(min, max) {
     if (pointer.dy > max) pointer.dy = max;
 }
 
-function decToHex(n) {
+function decToHex255(n) {
     const letters = {
         10: "a",
         11: "b",
@@ -235,7 +235,6 @@ function update() {
     particles.forEach(p => { p.update(clock); });
     particles = particles.filter(p => p.elapsed < p.lifespan && p.inside);
     Menu.performance.particleCount.textContent = particles.length;
-    
 }
 
 function draw() {
@@ -308,6 +307,7 @@ for (let propName in Menu.inputs) {
     input.element.addEventListener(eType, function() {
         Config.setCustom();
         switch (input.type) {
+            // thank you closures for making this possible lmao
             
             case "select":
                 Config[propName] = this.value;
@@ -332,13 +332,12 @@ for (let propName in Menu.inputs) {
                     const n = Math.round((avg * 0.001) * (1000 / Config.spawnDelay));
                     Menu.performance.maxParticles.textContent = `${n} (approx.)`;
                 }
-                
-                
                 break;
         }
     });
 }
 
-//////////////////////////
+
+////// RUN FORREST RUN //////
 
 requestAnimationFrame(run);
