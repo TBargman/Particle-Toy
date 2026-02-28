@@ -143,16 +143,16 @@ function handleDown(e) {
     pTiming.acc = 0;
     pointer.isDown = true;
     
-    const p = "touches" in e ? e.touches[0] : e;
-    pointer.x = p.clientX;
-    pointer.y = p.clientY;
+    const t = "touches" in e;
+    pointer.x = t ? e.touches[0].clientX : e.clientX;
+    pointer.y = t ? e.touches[0].clientY : e.clientY;
     pointer.px = pointer.x;
     pointer.py = pointer.y;
 }
 
 function handleMove(e) {
-    const isMobile = "touches" in e;
-    if (isMobile) {
+    const t = "touches" in e;
+    if (t) {
         pointer.x = e.touches[0].clientX;
         pointer.y = e.touches[0].clientY;
     } else if (pointer.isDown) {
